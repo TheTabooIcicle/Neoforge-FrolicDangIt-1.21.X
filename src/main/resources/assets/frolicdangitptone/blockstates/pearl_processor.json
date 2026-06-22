@@ -1,0 +1,13 @@
+{
+	"variants": {
+		"half=lower,facing=north": { "model": "frolicdangitptone:block/pearl_processor_lower" },
+		"half=lower,facing=south": { "model": "frolicdangitptone:block/pearl_processor_lower", "y": 180 },
+		"half=lower,facing=west":  { "model": "frolicdangitptone:block/pearl_processor_lower", "y": 270 },
+		"half=lower,facing=east":  { "model": "frolicdangitptone:block/pearl_processor_lower", "y": 90 },
+
+		"half=upper,facing=north": { "model": "frolicdangitptone:block/pearl_processor_upper" },
+		"half=upper,facing=south": { "model": "frolicdangitptone:block/pearl_processor_upper", "y": 180 },
+		"half=upper,facing=west":  { "model": "frolicdangitptone:block/pearl_processor_upper", "y": 270 },
+		"half=upper,facing=east":  { "model": "frolicdangitptone:block/pearl_processor_upper", "y": 90 }
+	}
+}
