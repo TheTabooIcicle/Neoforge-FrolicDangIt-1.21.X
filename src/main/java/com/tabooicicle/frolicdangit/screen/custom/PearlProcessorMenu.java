@@ -8,48 +8,131 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class PearlProcessorMenu extends AbstractContainerMenu {
     public final PearlProcessorBlockEntity blockEntity;
-    private final Level level;
     private final ContainerData data;
+    private final Level level;
 
-    public PearlProcessorMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData){
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(5));
+    private static final int FUEL_SLOT_X = 33;
+    private static final int FUEL_SLOT_Y = 85;
+    private static final int BOTTLE_SLOT_X = 79;
+    private static final int BOTTLE_SLOT_Y = 78;
+    private static final int COMPONENT_SLOT_X = 79;
+    private static final int COMPONENT_SLOT_Y = 20;
+
+    private static final int ITEM1_SLOT_X = 59;
+    private static final int ITEM1_SLOT_Y = 41;
+    private static final int ITEM2_SLOT_X = 79;
+    private static final int ITEM2_SLOT_Y = 49;
+    private static final int ITEM3_SLOT_X = 99;
+    private static final int ITEM3_SLOT_Y = 41;
+
+    private static final int PLAYER_INVENTORY_X = 8;
+    private static final int PLAYER_INVENTORY_Y = 118;
+    private static final int HOTBAR_X = 8;
+    private static final int HOTBAR_Y = 176;
+
+    public PearlProcessorMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
+        this(containerId, inv,
+                (PearlProcessorBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()),
+                ((PearlProcessorBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos())).getData()
+        );
     }
-
-    public PearlProcessorMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data){
-        super(ModMenuTypes.PEARL_PROCESSOR_MENU.get(), pContainerId);
-        this.blockEntity = ((PearlProcessorBlockEntity) entity);
+    public PearlProcessorMenu(int containerId, Inventory inv, PearlProcessorBlockEntity entity, ContainerData data) {
+        super(ModMenuTypes.PEARL_PROCESSOR_MENU.get(), containerId);
+        this.blockEntity = entity;
         this.level = inv.player.level();
         this.data = data;
 
-        addPlayerHotbar(inv);
-        addPlayerInventory(inv);
 
-        this.addSlot(new SlotItemHandler(blockEntity.itemHandler, 0, 54, 34));
-        this.addSlot(new SlotItemHandler(blockEntity.itemHandler, 1, 104,34));
+        // slot 0: fuel
+        this.addSlot(new SlotItemHandler(entity.itemHandler, 0, FUEL_SLOT_X, FUEL_SLOT_Y) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.getItem() == Items.BLAZE_POWDER;
+            }
+        });
 
-        addDataSlots(data);
+        // slot 1: bottle of enchanting
+        this.addSlot(new SlotItemHandler(entity.itemHandler, 1, BOTTLE_SLOT_X, BOTTLE_SLOT_Y) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.getItem() == Items.EXPERIENCE_BOTTLE;
+            }
+        });
 
+        // slot 2: level component
+        this.addSlot(new SlotItemHandler(entity.itemHandler, 2, COMPONENT_SLOT_X, COMPONENT_SLOT_Y) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return true; // Any item can be placed as component
+            }
+        });
 
+        // slot 3: bubble to upgrade
+        this.addSlot(new SlotItemHandler(entity.itemHandler, 3, ITEM1_SLOT_X, ITEM1_SLOT_Y) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return true; // Any item can be upgraded
+            }
+
+            @Override
+            public int getMaxStackSize() {
+                return 1; // only allow 1 item
+            }
+        });
+
+        // slot 4: bubble 2 to upgrade
+        this.addSlot(new SlotItemHandler(entity.itemHandler, 4, ITEM2_SLOT_X, ITEM2_SLOT_Y) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return true;
+            }
+
+            @Override
+            public int getMaxStackSize() {
+                return 1; // only allow 1 item
+            }
+        });
+
+        // slot 5: bubble 3 to upgrade
+        this.addSlot(new SlotItemHandler(entity.itemHandler, 5, ITEM3_SLOT_X, ITEM3_SLOT_Y) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return true;
+            }
+
+            @Override
+            public int getMaxStackSize() {
+                return 1; // only allow 1 item
+            }
+        });
+
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                this.addSlot(new Slot(inv, col + row * 9 + 9,
+                        PLAYER_INVENTORY_X + col * 18,
+                        PLAYER_INVENTORY_Y + row * 18));
+            }
+        }
+
+        for (int col = 0; col < 9; col++) {
+            this.addSlot(new Slot(inv, col,
+                    HOTBAR_X + col * 18,
+                    HOTBAR_Y));
+        }
+
+        this.addDataSlots(data);
     }
 
     public boolean isCrafting() {
         return data.get(0) > 0;
     }
-
-    public int getScaledArrowProgress(){
-        int progress = this.data.get(0);
-        int maxProgress = this.data.get(1);
-        int arrowPixelSize = 18;
-
-        return maxProgress != 0 && progress != 0 ? progress * arrowPixelSize / maxProgress : 0;
-    }
-
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
     // must assign a slot number to each of the slots used by the GUI.
@@ -59,68 +142,52 @@ public class PearlProcessorMenu extends AbstractContainerMenu {
     //  9 - 35 = player inventory slots (which map to the InventoryPlayer slot numbers 9 - 35)
     //  36 - 44 = TileInventory slots, which map to our TileEntity slot numbers 0 - 8)
     private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
-    private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
+    private static final int PLAYER_INVENTORY_SLOT_COUNT = 36; // 27 inv + 9 hotbar
     private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int FD_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = 0;
 
-    // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 5;  // must be the number of slots you have!
-
+    private static final int TE_INVENTORY_SLOT_COUNT = 6;  // must be the number of slots you have!
+    private static final int PLAYER_INVENTORY_FIRST_SLOT_INDEX = TE_INVENTORY_SLOT_COUNT;
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int pIndex) {
-        Slot sourceSlot = slots.get(pIndex);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
-
-        // Check if the slot clicked is one of the vanilla container slots
-        if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            // This is a vanilla container slot so merge the stack into the tile inventory
-            if (!moveItemStackTo(sourceStack, FD_INVENTORY_FIRST_SLOT_INDEX, FD_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;  // EMPTY_ITEM
-            }
-        } else if (pIndex < FD_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            // This is a TE slot so merge the stack into the players inventory
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+    public ItemStack quickMoveStack(Player player, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (index < 6) {
+                if (!this.moveItemStackTo(itemstack1, 6, this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.moveItemStackTo(itemstack1, 0, 6, false)) {
                 return ItemStack.EMPTY;
             }
-        } else {
-            System.out.println("Invalid slotIndex:" + pIndex);
-            return ItemStack.EMPTY;
+
+            if (itemstack1.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
         }
-        // If stack size == 0 (the entire stack was moved) set slot contents to null
-        if (sourceStack.getCount() == 0) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
-        }
-        sourceSlot.onTake(playerIn, sourceStack);
-        return copyOfSourceStack;
+        return itemstack;
+    }
+
+    public int getProgress() {
+        return this.data.get(0);
+    }
+
+    public int getMaxProgress() {
+        return this.data.get(1);
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(@NotNull Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
                 pPlayer, ModBlocks.PEARL_PROCESSOR.get());
     }
 
-    private void addPlayerInventory(Inventory playerInventory) {
-        for (int i = 0; i < 3; ++i) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 9 + l * 18, 84 + i * 18));
-            }
-        }
+    public int getFuelTime() {
+        return this.data.get(2);
     }
-
-    private void addPlayerHotbar(Inventory playerInventory){
-        for(int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
-        }
-    }
-
-
 }

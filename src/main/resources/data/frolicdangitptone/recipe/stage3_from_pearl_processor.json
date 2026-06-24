@@ -1,0 +1,39 @@
+{
+  "type": "frolicdangitptone:pearl_processor_crafting",
+  "slot0": {
+    "item": "minecraft:blaze_powder"
+  },
+  "slot0_count": 1,
+  "slot1": {
+    "item": "minecraft:experience_bottle"
+  },
+  "slot1_count": 2,
+  "slot2": {
+    "item": "frolicdangitptone:ground_shard"
+  },
+  "slot2_count": 1,
+  "slot3": {
+    "item": "frolicdangitptone:eye_stage2"
+  },
+  "slot3_count": 1,
+  "slot4": {
+    "item": "frolicdangitptone:eye_stage2"
+  },
+  "slot4_count": 1,
+  "slot5": {
+    "item": "frolicdangitptone:eye_stage2"
+  },
+  "slot5_count": 1,
+  "output_slot3": {
+    "id": "frolicdangitptone:eye_stage3",
+    "count": 1
+  },
+  "output_slot4": {
+    "id": "frolicdangitptone:eye_stage3",
+    "count": 1
+  },
+  "output_slot5": {
+    "id": "frolicdangitptone:eye_stage3",
+    "count": 1
+  }
+}

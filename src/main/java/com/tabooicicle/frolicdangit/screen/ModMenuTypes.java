@@ -1,7 +1,9 @@
 package com.tabooicicle.frolicdangit.screen;
 
 import com.tabooicicle.frolicdangit.FrolicDangIt;
+import com.tabooicicle.frolicdangit.block.entity.PearlProcessorBlockEntity;
 import com.tabooicicle.frolicdangit.screen.custom.PearlProcessorMenu;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -16,7 +18,12 @@ public class ModMenuTypes {
             DeferredRegister.create(Registries.MENU, FrolicDangIt.MOD_ID);
 
     public static final DeferredHolder<MenuType<?>, MenuType<PearlProcessorMenu>> PEARL_PROCESSOR_MENU =
-            registerMenuType("pearl_processor_menu", PearlProcessorMenu::new);
+            MENUS.register("pearl_processor_menu", () -> IMenuTypeExtension.create((windowId, inv, data)
+                    -> {
+                BlockPos pos = data.readBlockPos();
+                PearlProcessorBlockEntity entity = (PearlProcessorBlockEntity) inv.player.level().getBlockEntity(pos);
+                return new PearlProcessorMenu(windowId, inv, entity, entity.getData());
+            } ));
 
 
     private static <T extends AbstractContainerMenu>DeferredHolder<MenuType<?>, MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory){

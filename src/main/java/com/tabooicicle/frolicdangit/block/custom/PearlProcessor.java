@@ -3,16 +3,14 @@ package com.tabooicicle.frolicdangit.block.custom;
 import com.mojang.serialization.MapCodec;
 import com.tabooicicle.frolicdangit.block.entity.ModBlockEntities;
 import com.tabooicicle.frolicdangit.block.entity.PearlProcessorBlockEntity;
+import com.tabooicicle.frolicdangit.screen.custom.PearlProcessorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,10 +19,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -39,19 +34,55 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
-
 public class PearlProcessor extends BaseEntityBlock {
     // Properties
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final MapCodec<PearlProcessor> CODEC = simpleCodec(PearlProcessor::new);
 
-
     public PearlProcessor(Properties properties) {
         super(properties);
 
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos,
+                                              Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+        if (!pLevel.isClientSide()) {
+            // if click up half, get lower half entity
+            BlockPos targetPos = pPos;
+            if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+                targetPos = pPos.below();
+            }
+            BlockEntity entity = pLevel.getBlockEntity(targetPos);
+            if(entity instanceof PearlProcessorBlockEntity pearlProcessorBlockEntity) {
+                // add blockpos into packet
+                ((ServerPlayer)pPlayer).openMenu(new SimpleMenuProvider(
+                        (containerId, playerInventory, player) ->
+                                new PearlProcessorMenu(containerId, playerInventory, pearlProcessorBlockEntity, pearlProcessorBlockEntity.getData()),
+                        Component.literal("Pearl Processor")
+                ), targetPos);
+            } else {
+                throw new IllegalStateException("Our Container provider is missing!");
+            }
+        }
+
+        return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
+    }
+
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if (pState.getBlock() != pNewState.getBlock()) {
+            // drop items from lower half only
+            if (pState.getValue(HALF) == DoubleBlockHalf.LOWER) {
+                BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+                if (blockEntity instanceof PearlProcessorBlockEntity pearlProcessorBlockEntity) {
+                    pearlProcessorBlockEntity.drops();
+                }
+            }
+            super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        }
     }
 
     @Override
@@ -114,52 +145,34 @@ public class PearlProcessor extends BaseEntityBlock {
     }
 
     @Override
+    protected RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         // Register BOTH properties to the builder
         builder.add(HALF, FACING);
     }
 
-
+    @Nullable
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new PearlProcessorBlockEntity(blockPos, blockState);
-    }
-
-    @Override
-    protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean movedByPiston) {
-        if (pState.getBlock() != pNewState.getBlock()){
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof PearlProcessorBlockEntity pearlProcessorBlockEntity) {
-                pearlProcessorBlockEntity.drops();
-            }
-        }
-
-
-        super.onRemove(pState, pLevel, pPos, pNewState, movedByPiston);
-    }
-
-    @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if (entity instanceof PearlProcessorBlockEntity pearlProcessorBlockEntity) {
-                ((ServerPlayer) pPlayer).openMenu(new SimpleMenuProvider(pearlProcessorBlockEntity, Component.literal("Pearl Processor")), pPos);
-            } else {
-                throw new IllegalStateException("Our Container provider is missing! OH NOOOOO");
-            }
-        }
-
-        return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
-    }
-
-    @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (level.isClientSide()){
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if (level.isClientSide()) {
             return null;
         }
 
-        return createTickerHelper(blockEntityType, ModBlockEntities.PEARL_PROCESSOR_BE.get(),
-                (level1, blockPos, blockState, blockEntity) -> blockEntity.tick(level1, blockPos, blockState));
+        // tick the lower half
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+            return createTickerHelper(blockEntityType, ModBlockEntities.PEARL_PROCESSOR_BE.get(),
+                    (level1, blockPos, blockState, blockEntity) -> blockEntity.tick(level1, blockPos, blockState));
+        }
+
+        return null;
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new PearlProcessorBlockEntity(pos, state);
     }
 }
