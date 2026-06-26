@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "U":  {
+      "item": "frolicdangitptone:pp_item_upper"
+    },
+    "C": {
+      "item": "frolicdangitptone:pearl_core"
+    },
+    "L":  {
+      "item": "frolicdangitptone:pp_item_lower"
+    }
+  },
+  "pattern": [
+    " U ",
+    " C ",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "frolicdangitptone:pearl_processor"
+  }
+}

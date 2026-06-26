@@ -17,10 +17,7 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(FrolicDangIt.MOD_ID);
-
-
-
-
+    // ADD BLOCKS BELOW
 
     public static final DeferredBlock<Block> PEARL_PROCESSOR = registerBlock("pearl_processor",
             () -> new PearlProcessor(BlockBehaviour.Properties.of().noOcclusion()));

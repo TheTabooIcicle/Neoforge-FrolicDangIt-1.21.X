@@ -4,6 +4,7 @@ import com.tabooicicle.frolicdangit.block.ModBlocks;
 import com.tabooicicle.frolicdangit.block.entity.ModBlockEntities;
 import com.tabooicicle.frolicdangit.item.ModCreativeModeTabs;
 import com.tabooicicle.frolicdangit.item.ModItems;
+import com.tabooicicle.frolicdangit.potion.ModPotions;
 import com.tabooicicle.frolicdangit.recipe.ModRecipes;
 import com.tabooicicle.frolicdangit.screen.ModMenuTypes;
 import com.tabooicicle.frolicdangit.screen.custom.PearlProcessorScreen;
@@ -13,7 +14,6 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
@@ -59,6 +59,7 @@ public class FrolicDangIt {
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModRecipes.register(modEventBus);
+        ModPotions.register(modEventBus);
 
         ITEMS.register(modEventBus);
 
@@ -76,13 +77,6 @@ public class FrolicDangIt {
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
     if(event.getTabKey() == CreativeModeTabs.INGREDIENTS){
-        event.accept(ModItems.ELDER_EYE);
-        event.accept(ModItems.GROUND_TOTEM);
-        event.accept(ModItems.GROUND_SHARD);
-        event.accept(ModItems.PEARL_STAGE_1);
-        event.accept(ModItems.PEARL_STAGE_2);
-        event.accept(ModItems.PEARL_STAGE_3);
-        event.accept(ModItems.PEARL_STAGE_4);
 
     }
     }

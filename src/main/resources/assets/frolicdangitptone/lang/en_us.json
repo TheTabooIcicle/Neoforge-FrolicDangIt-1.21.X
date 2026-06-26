@@ -1,15 +1,26 @@
 {
- "item.frolicdangitptone.elder_eye": "Elder Eye",
+ "item.frolicdangitptone.elder_eye_drop": "Elder Eye",
  "item.frolicdangitptone.ground_totem": "Ground Totem",
  "item.frolicdangitptone.ground_shard": "Ground Echo Shard",
  "item.frolicdangitptone.eye_stage1": "Excited Pearl",
  "item.frolicdangitptone.eye_stage2": "Spirited Pearl",
  "item.frolicdangitptone.eye_stage3": "Beating Pearl",
  "item.frolicdangitptone.eye_stage4": "Scouring Pearl",
+ "item.frolicdangitptone.small_heater": "Small Heater",
+ "item.frolicdangitptone.fermented_elder_eye": "Fermented Elder Eye",
+ "item.frolicdangitptone.crying_obsidian_dust": "Crying Obsidian Dust",
+ "item.frolicdangitptone.pearl_core": "Pearl Core",
+ "item.frolicdangitptone.processing_glass_tube": "Glass Tube",
+ "item.frolicdangitptone.pp_item_upper": "Upper Processing Chamber",
+ "item.frolicdangitptone.pp_item_lower": "Lower Processing Chamber",
 
  "block.frolicdangitptone.pearl_processor": "Pearl Processor",
 
-"creativetab.frolicdangitptone.frolic_pt1": "Frolic Already"
+"creativetab.frolicdangitptone.frolic_pt1": "Frolic Already",
+
+ "item.minecraft.potion.effect.essence_of_seeking": "Essence of Seeking",
+ "item.minecraft.splash_potion.effect.essence_of_seeking": "Essence of Seeking",
+ "item.minecraft.lingering_potion.effect.essence_of_seeking": "Essence of Seeking"
 
 
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C":  {
+      "item": "minecraft:cobblestone"
+    },
+    "B": {
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "pattern": [
+    " C ",
+    "CBC",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "frolicdangitptone:small_heater"
+  }
+}

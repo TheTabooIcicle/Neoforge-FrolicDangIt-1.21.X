@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C":  {
+      "item": "minecraft:copper_ingot"
+    },
+    "H":  {
+      "item": "frolicdangitptone:small_heater"
+    },
+    "L":  {
+      "item": "minecraft:lightning_rod"
+    },
+    "S":  {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    "G": {
+      "item": "frolicdangitptone:processing_glass_tube"
+    }
+  },
+  "pattern": [
+    "LGL",
+    "CHC",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "frolicdangitptone:pp_item_lower"
+  }
+}

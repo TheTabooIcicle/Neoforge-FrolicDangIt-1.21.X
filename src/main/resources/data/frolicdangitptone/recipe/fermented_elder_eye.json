@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "W":  {
+      "item": "minecraft:warped_fungus"
+    },
+    "F":  {
+      "item": "minecraft:crimson_fungus"
+    },
+    "S":  {
+      "item": "minecraft:sugar"
+    },
+    "E": {
+      "item": "frolicdangitptone:elder_eye_drop"
+    }
+  },
+  "pattern": [
+    "FEW",
+    " S ",
+    "   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "frolicdangitptone:fermented_elder_eye"
+  }
+}

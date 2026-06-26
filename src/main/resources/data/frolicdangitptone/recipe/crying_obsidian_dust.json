@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:crying_obsidian"
+    }
+  ],
+  "result":{
+    "count": 4,
+    "id": "frolicdangitptone:crying_obsidian_dust"
+  }
+}
