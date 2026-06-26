@@ -18,7 +18,7 @@ public class ModPotions {
     public static final DeferredHolder<Potion, Potion> ESSENCE_OF_SEEKING = POTIONS.register("essence_of_seeking",
             () -> new Potion(
                     new MobEffectInstance(ModEffects.SNEAKY_BLIND, 4800, 2),
-                    new MobEffectInstance(ModEffects.SNEAKY_INVIS, 480,0)));
+                    new MobEffectInstance(ModEffects.SNEAKY_INVIS, 4800,0)));
 
     public static void register(IEventBus eventBus) {
         POTIONS.register(eventBus);

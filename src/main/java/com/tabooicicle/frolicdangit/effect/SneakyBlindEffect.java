@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class SneakyBlindEffect extends MobEffect {
     public SneakyBlindEffect() {
-        super(MobEffectCategory.HARMFUL, 2696993);
+        super(MobEffectCategory.HARMFUL, 16732008);
     }
 
 }

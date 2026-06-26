@@ -50,7 +50,7 @@ public class JEIFrolicDangitModPlugin implements IModPlugin {
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(PearlProcessorScreen.class, 74, 30, 22, 20, //change for click area of gui
+        registration.addRecipeClickArea(PearlProcessorScreen.class, 125, 15, 20, 20, //change for click area of gui
                 PearlProcessorRecipeCategory.PEARL_PROCESSOR_RECIPE_RECIPE_TYPE);
     }
 

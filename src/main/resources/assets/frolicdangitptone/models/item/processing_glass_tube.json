@@ -1,6 +1,7 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
+    "parent": "minecraft:cutout",
 	"textures": {
 		"0": "frolicdangitptone:item/gt_lower",
 		"1": "frolicdangitptone:item/gt_top",

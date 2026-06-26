@@ -21,7 +21,7 @@ public class SneakyInvisEffect extends MobEffect {
         if (!livingEntity.level().isClientSide()) {
             livingEntity.addEffect(new MobEffectInstance(
                     MobEffects.INVISIBILITY,
-                    40,
+                    4800,
                     0,
                     false,
                     false,

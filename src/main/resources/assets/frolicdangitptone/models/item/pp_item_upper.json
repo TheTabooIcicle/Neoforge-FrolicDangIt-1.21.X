@@ -1,7 +1,9 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
-	"textures": {
+  "parent": "minecraft:cutout",
+
+  "textures": {
 		"0": "frolicdangitptone:block/rod_upper",
 		"1": "frolicdangitptone:block/pearl_slab_mounts_upper",
 		"4": "frolicdangitptone:block/smol_dispenser",

@@ -1,7 +1,9 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
-	"textures": {
+  "parent": "minecraft:cutout",
+
+  "textures": {
 		"0": "frolicdangitptone:block/pearl_core",
 		"1": "frolicdangitptone:block/glass_tube2",
 		"2": "frolicdangitptone:block/pearl_slab_mounts_upper",
