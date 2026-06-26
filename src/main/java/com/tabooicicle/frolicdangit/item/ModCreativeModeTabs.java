@@ -37,7 +37,6 @@ public class ModCreativeModeTabs {
                                 output.accept(ModItems.ELDER_EYE);
                                 output.accept(ModItems.FERMENTED_ELDER_EYE);
                                 output.accept(createPotionStack(Items.POTION, ModPotions.ESSENCE_OF_SEEKING));
-                                output.accept(ModItems.ESSENCE_OF_SEEKING);
                                 output.accept(ModItems.GROUND_TOTEM);
                                 output.accept(ModItems.PEARL_STAGE_1);
                                 output.accept(ModItems.PEARL_STAGE_2);
