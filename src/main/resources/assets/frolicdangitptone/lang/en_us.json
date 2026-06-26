@@ -15,8 +15,9 @@
  "item.frolicdangitptone.pp_item_lower": "Lower Processing Chamber",
 
  "block.frolicdangitptone.pearl_processor": "Pearl Processor",
-
-"creativetab.frolicdangitptone.frolic_pt1": "Frolic Already",
+  "creativetab.frolicdangitptone.frolic_pt1": "Frolic Already",
+  "effect.frolicdangitptone.sneaky_blind": "???",
+  "effect.frolicdangitptone.sneaky_invis": "???",
 
  "item.minecraft.potion.effect.essence_of_seeking": "Essence of Seeking",
  "item.minecraft.splash_potion.effect.essence_of_seeking": "Essence of Seeking",

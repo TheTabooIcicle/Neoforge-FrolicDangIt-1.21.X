@@ -9,11 +9,4 @@ public class SneakyBlindEffect extends MobEffect {
         super(MobEffectCategory.HARMFUL, 2696993);
     }
 
-    @Override
-    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (livingEntity.isSprinting()) {
-            livingEntity.setSprinting(false);
-        }
-        return true;
-    }
 }
