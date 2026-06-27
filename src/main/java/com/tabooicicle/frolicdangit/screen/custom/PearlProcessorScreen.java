@@ -45,7 +45,7 @@ public class PearlProcessorScreen extends AbstractContainerScreen<PearlProcessor
     private static final int LEFT_BAR2_WIDTH = 8;
     private static final int LEFT_BAR2_HEIGHT = 25;
 
-    private static final int JEI_BUTTON_X = 130; // change for position
+    private static final int JEI_BUTTON_X = 150; // change for position
     private static final int JEI_BUTTON_Y = 15;
     private static final int JEI_BUTTON_WIDTH = 20;
     private static final int JEI_BUTTON_HEIGHT = 20;

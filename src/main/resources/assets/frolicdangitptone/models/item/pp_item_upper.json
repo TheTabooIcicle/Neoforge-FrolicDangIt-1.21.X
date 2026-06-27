@@ -1,15 +1,14 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
-  "parent": "minecraft:cutout",
-
-  "textures": {
+	"parent": "minecraft:cutout",
+	"textures": {
 		"0": "frolicdangitptone:block/rod_upper",
 		"1": "frolicdangitptone:block/pearl_slab_mounts_upper",
 		"4": "frolicdangitptone:block/smol_dispenser",
 		"6": "frolicdangitptone:item/gt_upper",
 		"7": "frolicdangitptone:block/copper_rod_thing2",
-		"particle": "frolicdangitptone:block/rod_upper"
+		"particle": "frolicdangitptone:item/gt_upper"
 	},
 	"elements": [
 		{
@@ -228,7 +227,8 @@
 			"scale": [0.5, 0.5, 0.5]
 		},
 		"ground": {
-			"translation": [0, 5, 0]
+			"translation": [0, 5, 0],
+			"scale": [0.5, 0.5, 0.5]
 		},
 		"gui": {
 			"rotation": [30, 45, 0],
@@ -236,6 +236,9 @@
 		},
 		"fixed": {
 			"rotation": [-90, 0, 0]
+		},
+		"on_shelf": {
+			"translation": [0, 0, -1.75]
 		}
 	},
 	"groups": [

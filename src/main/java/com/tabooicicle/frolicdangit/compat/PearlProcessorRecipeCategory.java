@@ -66,7 +66,7 @@ public class PearlProcessorRecipeCategory implements IRecipeCategory<PearlProces
     private final IDrawable icon;
 
     public PearlProcessorRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0,0, 176, 120);
+        this.background = helper.createDrawable(TEXTURE, 0,0, 176, 140);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.PEARL_PROCESSOR));
     }
 
