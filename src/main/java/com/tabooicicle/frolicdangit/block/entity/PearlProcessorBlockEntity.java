@@ -1,5 +1,6 @@
 package com.tabooicicle.frolicdangit.block.entity;
 
+import com.tabooicicle.frolicdangit.block.custom.PearlProcessor;
 import com.tabooicicle.frolicdangit.recipe.ModRecipes;
 import com.tabooicicle.frolicdangit.recipe.PearlProcessorRecipe;
 import com.tabooicicle.frolicdangit.recipe.PearlProcessorRecipeInput;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -225,6 +227,19 @@ public class PearlProcessorBlockEntity extends BlockEntity implements MenuProvid
                 resetProgress();
                 dataArray[0] = progress;
 
+            }
+        }
+
+        boolean isCrafting = fuelTime > 0 && hasRecipe();
+        BlockState currState = level1.getBlockState(blockPos);
+        if (currState.getValue(PearlProcessor.CRAFTING) != isCrafting) {
+            level1.setBlock(blockPos, currState.setValue(PearlProcessor.CRAFTING, isCrafting), 3);
+            if (currState.getValue(PearlProcessor.HALF) == DoubleBlockHalf.LOWER) {
+                BlockPos upperPos = blockPos.above();
+                BlockState upperState = level1.getBlockState(upperPos);
+                if (upperState.getBlock() == this.getBlockState().getBlock()) {
+                    level1.setBlock(upperPos, upperState.setValue(PearlProcessor.CRAFTING, isCrafting), 3);
+                }
             }
         }
 
