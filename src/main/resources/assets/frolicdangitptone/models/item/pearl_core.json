@@ -24,13 +24,23 @@
 	],
 	"display": {
 		"thirdperson_righthand": {
-			"scale": [0.8, 0.8, 0.8]
+			"scale": [0.75, 0.75, 0.75]
 		},
 		"thirdperson_lefthand": {
-			"scale": [0.8, 0.8, 0.8]
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"firstperson_righthand": {
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"firstperson_lefthand": {
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"ground": {
+			"scale": [0.75, 0.75, 0.75]
 		},
 		"gui": {
-			"rotation": [45, 135, 0]
+			"rotation": [45, 135, 0],
+			"scale": [0.6, 0.6, 0.6]
 		},
 		"head": {
 			"translation": [0, 10.5, 0]
