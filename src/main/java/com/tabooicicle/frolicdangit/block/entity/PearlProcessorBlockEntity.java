@@ -94,9 +94,9 @@ public class PearlProcessorBlockEntity extends BlockEntity implements MenuProvid
         }
     };
     private int progress = 0;
-    private int maxProgress = 144;
+    private int maxProgress = 360;
     private int fuelTime = 0;
-    private final int MAX_FUEL_TIME = 3 * 144;
+    private final int MAX_FUEL_TIME = 3 * 360;
 
     private int lastFuelTime = -1;
 
@@ -104,7 +104,7 @@ public class PearlProcessorBlockEntity extends BlockEntity implements MenuProvid
         super(ModBlockEntities.PEARL_PROCESSOR_BE.get(), pos, blockState);
         // initialize the data array with default values
         dataArray[0] = 0;
-        dataArray[1] = 144;
+        dataArray[1] = 360;
         dataArray[2] = 0;
     }
 
@@ -147,7 +147,7 @@ public class PearlProcessorBlockEntity extends BlockEntity implements MenuProvid
         maxProgress = pTag.getInt("pearl_processor.max_progress");
         fuelTime = pTag.getInt("pearl_processor.fuel_time");
 
-        if (maxProgress <= 0) maxProgress = 144;
+        if (maxProgress <= 0) maxProgress = 360;
 
         dataArray[0] = progress;
         dataArray[1] = maxProgress;
