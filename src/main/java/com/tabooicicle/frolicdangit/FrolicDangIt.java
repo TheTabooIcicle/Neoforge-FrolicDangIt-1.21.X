@@ -5,6 +5,7 @@ import com.tabooicicle.frolicdangit.block.entity.ModBlockEntities;
 import com.tabooicicle.frolicdangit.effect.ModEffects;
 import com.tabooicicle.frolicdangit.item.ModCreativeModeTabs;
 import com.tabooicicle.frolicdangit.item.ModItems;
+import com.tabooicicle.frolicdangit.loot.ModLootModifiers;
 import com.tabooicicle.frolicdangit.potion.ModPotions;
 import com.tabooicicle.frolicdangit.recipe.ModRecipes;
 import com.tabooicicle.frolicdangit.screen.ModMenuTypes;
@@ -62,6 +63,7 @@ public class FrolicDangIt {
         ModRecipes.register(modEventBus);
         ModEffects.register(modEventBus); // make sure to register BEFORE potions
         ModPotions.register(modEventBus);
+        ModLootModifiers.register(modEventBus);
 
         ITEMS.register(modEventBus);
 
