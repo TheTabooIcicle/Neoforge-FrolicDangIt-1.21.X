@@ -1,7 +1,9 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
-	"textures": {
+  "parent": "minecraft:cutout",
+
+  "textures": {
 		"1": "frolicdangitptone:block/rod_lower",
 		"2": "frolicdangitptone:block/pearl_slab_mounts_lower",
 		"3": "frolicdangitptone:block/smol_heater",

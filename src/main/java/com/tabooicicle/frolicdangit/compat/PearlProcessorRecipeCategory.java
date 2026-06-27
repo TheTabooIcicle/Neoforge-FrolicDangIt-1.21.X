@@ -2,6 +2,7 @@ package com.tabooicicle.frolicdangit.compat;
 
 import com.tabooicicle.frolicdangit.FrolicDangIt;
 import com.tabooicicle.frolicdangit.block.ModBlocks;
+import com.tabooicicle.frolicdangit.potion.ModPotions;
 import com.tabooicicle.frolicdangit.recipe.PearlProcessorRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -14,12 +15,20 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.Nullable;
 
-public class PearlProcessorRecipeCategory  implements IRecipeCategory<PearlProcessorRecipe> {
+import java.util.Optional;
+
+public class PearlProcessorRecipeCategory implements IRecipeCategory<PearlProcessorRecipe> {
     public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(FrolicDangIt.MOD_ID, "pearl_processor");
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(FrolicDangIt.MOD_ID, "textures/gui/pearl_processor/pearl_processor_gui_jei.png");
 
@@ -57,7 +66,7 @@ public class PearlProcessorRecipeCategory  implements IRecipeCategory<PearlProce
     private final IDrawable icon;
 
     public PearlProcessorRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0,0, 176, 196);
+        this.background = helper.createDrawable(TEXTURE, 0,0, 176, 120);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.PEARL_PROCESSOR));
     }
 
@@ -88,12 +97,46 @@ public class PearlProcessorRecipeCategory  implements IRecipeCategory<PearlProce
         // for each ingredient
         builder.addSlot(RecipeIngredientRole.INPUT, 33, 81).addIngredients(recipe.getIngredients().get(0));
         builder.addSlot(RecipeIngredientRole.INPUT, 79, 74).addIngredients(recipe.getIngredients().get(1));
-        builder.addSlot(RecipeIngredientRole.INPUT, 79, 16).addIngredients(recipe.getIngredients().get(2));
+        // check if potion or item and handle accordingly
+        Ingredient slot2Ingredient = recipe.slot2();
+        boolean isPotion = false;
+        if (!slot2Ingredient.isEmpty()){
+            // 1.21+, getItems() returns a cached array of ItemStacks which are stripped of NBT/Components
+            ItemStack[] stacks = slot2Ingredient.getItems();
+            if (stacks.length > 0) {
+                ItemStack first = stacks[0];
+                // check if the first possible item in the ingredient list is a vanilla Potion.
+                isPotion = (first.getItem() == net.minecraft.world.item.Items.POTION);
+            }
+        }
+        if (isPotion) {
+            // new potionstack with empty NBT or components to build for JEI
+            net.minecraft.world.item.ItemStack potionStack = new net.minecraft.world.item.ItemStack(Items.POTION, 1);
+            var potionHolder = ModPotions.ESSENCE_OF_SEEKING; // holds unique ID of seeking potion
+
+            // by using DataComponentPatch we can safely apply Data Components to an ItemStack ^.^
+            DataComponentPatch patch = DataComponentPatch.builder()
+                            .set(DataComponents.POTION_CONTENTS,
+                                    PotionContents.EMPTY
+                                            .withPotion(potionHolder) // replace empty potion with registered potion
+                            )
+                                    .build();
+            // apply patch to potionstack, contains POTION_CONTENTS component with all the info
+            potionStack.applyComponents(patch);
+
+            builder.addSlot(RecipeIngredientRole.INPUT,79,16)
+                    .addItemStack(potionStack) // addItemStack instead of addIngredients for JEI visibility
+                    .setSlotName("Component");
+        } else {
+            // if not potion
+            builder.addSlot(RecipeIngredientRole.INPUT, 79, 16)
+                    .addIngredients(slot2Ingredient)
+                    .setSlotName("Component");
+        }
         builder.addSlot(RecipeIngredientRole.INPUT, 59, 37).addIngredients(recipe.getIngredients().get(3));
         builder.addSlot(RecipeIngredientRole.INPUT, 79, 45).addIngredients(recipe.getIngredients().get(4));
         builder.addSlot(RecipeIngredientRole.INPUT, 99, 37).addIngredients(recipe.getIngredients().get(5));
 
-        // each output but they go over input... where go
         builder.addSlot(RecipeIngredientRole.OUTPUT, 144, 74).addItemStack(recipe.getResultItem(null));
 //        builder.addSlot(RecipeIngredientRole.OUTPUT, 79, 45).addItemStack(recipe.getResultItem(null));
 //        builder.addSlot(RecipeIngredientRole.OUTPUT, 99, 37).addItemStack(recipe.getResultItem(null));

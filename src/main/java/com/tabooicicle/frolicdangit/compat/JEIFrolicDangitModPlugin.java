@@ -14,9 +14,12 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JeiPlugin
@@ -34,16 +37,20 @@ public class JEIFrolicDangitModPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
+        if (Minecraft.getInstance().level == null) return; // wait until world loads to prevent crashes at startup
 
-        List<PearlProcessorRecipe> tallBlockRecipes = recipeManager.
-                getAllRecipesFor(ModRecipes.PEARL_PROCESSOR_TYPE.get()).stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(PearlProcessorRecipeCategory.PEARL_PROCESSOR_RECIPE_RECIPE_TYPE, tallBlockRecipes);
+        List<PearlProcessorRecipe> pearlProcessorRecipes = new ArrayList<>();
+        for (RecipeHolder<PearlProcessorRecipe> holder : Minecraft.getInstance().level.getRecipeManager()
+                .getAllRecipesFor(ModRecipes.PEARL_PROCESSOR_TYPE.get())) {
+            pearlProcessorRecipes.add(holder.value());
+        }
+
+        registration.addRecipes(PearlProcessorRecipeCategory.PEARL_PROCESSOR_RECIPE_RECIPE_TYPE, pearlProcessorRecipes);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(PearlProcessorScreen.class, 74, 30, 22, 20, //change for click area of gui
+        registration.addRecipeClickArea(PearlProcessorScreen.class, 125, 15, 20, 20, //change for click area of gui
                 PearlProcessorRecipeCategory.PEARL_PROCESSOR_RECIPE_RECIPE_TYPE);
     }
 

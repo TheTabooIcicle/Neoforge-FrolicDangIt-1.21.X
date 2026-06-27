@@ -6,14 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class SneakyBlindEffect extends MobEffect {
     public SneakyBlindEffect() {
-        super(MobEffectCategory.HARMFUL, 2696993);
+        super(MobEffectCategory.HARMFUL, 16732008);
     }
 
-    @Override
-    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (livingEntity.isSprinting()) {
-            livingEntity.setSprinting(false);
-        }
-        return true;
-    }
 }

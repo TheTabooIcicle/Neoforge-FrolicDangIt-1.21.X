@@ -29,6 +29,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class PearlProcessorBlockEntity extends BlockEntity implements MenuProvider {
+
+
+
     public final ItemStackHandler itemHandler = new ItemStackHandler(6) {
         protected void onContentsChanged(int slot) {
             setChanged();

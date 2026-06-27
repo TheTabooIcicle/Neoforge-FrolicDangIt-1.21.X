@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.fml.ModList;
 
 public class PearlProcessorScreen extends AbstractContainerScreen<PearlProcessorMenu> {
     public static final ResourceLocation GUI_TEXTURE =
@@ -18,6 +19,8 @@ public class PearlProcessorScreen extends AbstractContainerScreen<PearlProcessor
             ResourceLocation.fromNamespaceAndPath(FrolicDangIt.MOD_ID, "textures/gui/burner.png");
     private static final ResourceLocation WHITE_BARS =
             ResourceLocation.fromNamespaceAndPath(FrolicDangIt.MOD_ID, "textures/gui/whitebar.png");
+    private static final ResourceLocation JEI_BUTTON =
+            ResourceLocation.fromNamespaceAndPath(FrolicDangIt.MOD_ID, "textures/gui/jei_button.png");
 
     private static final int BURNER_X = 77;
     private static final int BURNER_Y = 97;
@@ -42,6 +45,11 @@ public class PearlProcessorScreen extends AbstractContainerScreen<PearlProcessor
     private static final int LEFT_BAR2_WIDTH = 8;
     private static final int LEFT_BAR2_HEIGHT = 25;
 
+    private static final int JEI_BUTTON_X = 130; // change for position
+    private static final int JEI_BUTTON_Y = 15;
+    private static final int JEI_BUTTON_WIDTH = 20;
+    private static final int JEI_BUTTON_HEIGHT = 20;
+
     public PearlProcessorScreen(PearlProcessorMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
         this.imageWidth = 176;
@@ -57,6 +65,15 @@ public class PearlProcessorScreen extends AbstractContainerScreen<PearlProcessor
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+
+        if (ModList.get().isLoaded("jei")) {
+            RenderSystem.setShaderTexture(0, JEI_BUTTON);
+            guiGraphics.blit(JEI_BUTTON,
+                    x + JEI_BUTTON_X,
+                    y + JEI_BUTTON_Y,
+                    0,0,
+                    16, 16, 16,16); // change this for placement
+        }
 
 
         int fuelTime = this.menu.getFuelTime();

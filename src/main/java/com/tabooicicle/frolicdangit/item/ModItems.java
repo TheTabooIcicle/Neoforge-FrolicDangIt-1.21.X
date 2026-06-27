@@ -50,8 +50,8 @@ public class ModItems  {
             () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> PEARL_PROCESSOR_LOWER = ITEMS.register("pp_item_lower",
             () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> ESSENCE_OF_SEEKING = ITEMS.register("essence_of_seeking",
-            () -> new PotionItem(new Item.Properties()));
+//    public static final DeferredItem<Item> ESSENCE_OF_SEEKING = ITEMS.register("essence_of_seeking",
+//            () -> new PotionItem(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

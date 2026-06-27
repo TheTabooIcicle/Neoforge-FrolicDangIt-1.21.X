@@ -7,6 +7,7 @@ import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterNamedRenderTypesEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 
@@ -19,7 +20,6 @@ public class ModEvents {
 
         builder.addMix(Potions.AWKWARD, ModItems.FERMENTED_ELDER_EYE.asItem(), ModPotions.ESSENCE_OF_SEEKING);
     }
-
 
     public static void onViewportFog(ViewportEvent.RenderFog renderFog) {
 
