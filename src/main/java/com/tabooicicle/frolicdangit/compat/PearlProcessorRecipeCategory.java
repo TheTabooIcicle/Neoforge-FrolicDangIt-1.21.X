@@ -77,9 +77,7 @@ public class PearlProcessorRecipeCategory implements IRecipeCategory<PearlProces
 
     @Override
     public Component getTitle() {
-        return Component.literal("tall block");
-        //TODO
-        // return Component.translatable("block.{modname}.{blockname}"); // block.{modname}.{blockname} replace {} with ur directory names
+        return Component.translatable("block.frolicdangitptone.pearl_processor"); // block.{modname}.{blockname} replace {} with ur directory names
     }
 
     @Override
@@ -96,7 +94,11 @@ public class PearlProcessorRecipeCategory implements IRecipeCategory<PearlProces
     public void setRecipe(IRecipeLayoutBuilder builder, PearlProcessorRecipe recipe, IFocusGroup focuses) { // TallBlockRecipe -> {blockname}Recipe
         // for each ingredient
         builder.addSlot(RecipeIngredientRole.INPUT, 33, 81).addIngredients(recipe.getIngredients().get(0));
-        builder.addSlot(RecipeIngredientRole.INPUT, 79, 74).addIngredients(recipe.getIngredients().get(1));
+        ItemStack bottleStack = new ItemStack(Items.EXPERIENCE_BOTTLE, recipe.slot1Count());
+        builder.addSlot(RecipeIngredientRole.INPUT, 79, 74)
+                .addItemStack(bottleStack)
+                .setSlotName("Bottle");
+
         // check if potion or item and handle accordingly
         Ingredient slot2Ingredient = recipe.slot2();
         boolean isPotion = false;
