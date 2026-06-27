@@ -1,5 +1,6 @@
 package com.tabooicicle.frolicdangit.block.entity;
 
+import com.tabooicicle.frolicdangit.block.ModBlocks;
 import com.tabooicicle.frolicdangit.block.custom.PearlProcessor;
 import com.tabooicicle.frolicdangit.recipe.ModRecipes;
 import com.tabooicicle.frolicdangit.recipe.PearlProcessorRecipe;
@@ -12,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -124,8 +127,12 @@ public class PearlProcessorBlockEntity extends BlockEntity implements MenuProvid
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
-
+        // drops contents
         Containers.dropContents(this.level, this.worldPosition, inventory);
+
+        //drops block once
+        Containers.dropItemStack(this.level,this.worldPosition.getX(), this.worldPosition.getY(), this.worldPosition.getZ(),
+                new ItemStack(ModBlocks.PEARL_PROCESSOR.asItem(), 1));
     }
 
     @Override
@@ -206,6 +213,7 @@ public class PearlProcessorBlockEntity extends BlockEntity implements MenuProvid
 
             if (progress >= maxProgress) {
                 if (recipe.isPresent()) {
+                    level.playSound(null,blockPos, SoundEvents.END_GATEWAY_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F); // play sound on crafting completion
                     PearlProcessorRecipe recipeValue = recipe.get().value();
 
                     // consume non bubbles
@@ -217,10 +225,10 @@ public class PearlProcessorBlockEntity extends BlockEntity implements MenuProvid
                 }
                 fuelTime -= (MAX_FUEL_TIME/3);
                 dataArray[2] = fuelTime;
-                debugFuelChange("FUEL DECREASED AFTER COMPLETE");
+//                debugFuelChange("FUEL DECREASED AFTER COMPLETE");
                 resetProgress();
                 dataArray[0] = progress;
-                debugFuelChange("RESET PROGRESS (fuelTime unchanged");
+//                debugFuelChange("RESET PROGRESS (fuelTime unchanged");
             }
         } else if (!hasRecipe){
             if (progress > 0) {
